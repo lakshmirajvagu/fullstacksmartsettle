@@ -68,10 +68,7 @@ export const acceptInvitation = async (req, res) => {
     await Group.findByIdAndUpdate(invite.groupId, {
       $addToSet: { members: req.userId },
     });
-
-    invite.status = "accepted";
-    await invite.save();
-
+    await Invitation.findByIdAndDelete(invite._id);
     res.json({ message: "Joined group successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -82,10 +79,8 @@ export const rejectInvitation = async (req, res) => {
   try {
     const { inviteId } = req.body;
 
-    await Invitation.findByIdAndUpdate(inviteId, {
-      status: "rejected",
-    });
-
+   await Invitation.findByIdAndDelete(inviteId);
+   
     res.json({ message: "Invitation rejected" });
   } catch (error) {
     res.status(500).json({ message: error.message });

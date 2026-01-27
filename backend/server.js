@@ -7,6 +7,8 @@ import authMiddleware from "./src/middleware/authmiddleware.js";
 import groupRoutes from "./src/routes/grouproutes.js";
 import invitationRoutes from "./src/routes/Invitationroutes.js";
 import transactionRoutes from "./src/routes/transactionroutes.js";
+import historyRoutes from "./src/routes/historyroutes.js";
+
 
 dotenv.config();
 
@@ -26,7 +28,7 @@ app.get("/", (req, res) => {
 app.use("/api/groups", groupRoutes);
 app.use("/api/invitations",invitationRoutes);
 app.use("/api/transactions", transactionRoutes);
-  
+app.use("/api/history", historyRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
