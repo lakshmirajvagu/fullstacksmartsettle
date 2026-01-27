@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 import connectDb from "./src/config/db.js";
 import userRoutes from "./src/routes/userroutes.js";
 import authMiddleware from "./src/middleware/authmiddleware.js";
-
+import groupRoutes from "./src/routes/grouproutes.js";
+import invitationRoutes from "./src/routes/Invitationroutes.js";
+import transactionRoutes from "./src/routes/transactionroutes.js";
 
 dotenv.config();
 
@@ -21,7 +23,10 @@ app.get("/", (req, res) => {
   res.send("SmartSettle API running...");
   
 });
-
+app.use("/api/groups", groupRoutes);
+app.use("/api/invitations",invitationRoutes);
+app.use("/api/transactions", transactionRoutes);
+  
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
