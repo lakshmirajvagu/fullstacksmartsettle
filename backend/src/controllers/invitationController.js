@@ -1,5 +1,7 @@
 import Invitation from "../models/Invitation.js";
 import Group from "../models/Group.js";
+import User from "../models/user.js";
+
 
 export const inviteUser = async (req, res) => {
   try {
@@ -15,6 +17,13 @@ export const inviteUser = async (req, res) => {
     if (!group.members.includes(req.userId)) {
       return res.status(403).json({ message: "Not a group member" });
     }
+
+    // check if user exists
+    const user = await User.findById(toUserId);
+    if (!user) {
+    return res.status(404).json({ message: "User not found" });
+    }
+
 
     // prevent duplicate invite
     const existingInvite = await Invitation.findOne({
