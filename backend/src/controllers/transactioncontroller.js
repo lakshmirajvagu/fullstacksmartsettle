@@ -5,7 +5,9 @@ import History from "../models/history.js";
 
 export const addTransaction = async (req, res) => {
   try {
-    const { groupId, toUserId, amount } = req.body;
+    const { groupId,fromUserId, toUserId, amount } = req.body;
+    if (fromUserId === toUserId)
+  return res.status(400).json({ message: "Invalid transaction" });
 
     // check group exists
     const group = await Group.findById(groupId);
@@ -20,7 +22,7 @@ export const addTransaction = async (req, res) => {
 
     const transaction = await Transaction.create({
       groupId,
-      fromUserId: req.userId,
+      fromUserId,
       toUserId,
       amount,
     });

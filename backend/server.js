@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
   
 });
 app.use("/api/groups", groupRoutes);
-app.use("/api/invitations",invitationRoutes);
+app.use("/api/invitation",invitationRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/history", historyRoutes);
 const PORT = process.env.PORT || 5000;

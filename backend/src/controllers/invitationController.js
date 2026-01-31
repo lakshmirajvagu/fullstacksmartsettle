@@ -8,6 +8,9 @@ export const inviteUser = async (req, res) => {
     const { groupId, toUserId } = req.body;
 
     // check group exists
+    if (toUserId === req.userId)
+  return res.status(400).json({ message: "Cannot invite yourself" });
+
     const group = await Group.findById(groupId);
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
@@ -56,13 +59,16 @@ export const getMyInvitations = async (req, res) => {
     const invites = await Invitation.find({
       toUserId: req.userId,
       status: "pending",
-    }).populate("groupId", "name");
+    })
+      .populate("groupId", "name")
+      .populate("fromUserId", "username");  // ⭐ ADD THIS
 
     res.json(invites);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const acceptInvitation = async (req, res) => {
   try {
