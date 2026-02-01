@@ -2,39 +2,45 @@ import Transaction from "../models/transaction.js";
 import Group from "../models/Group.js";
 import { minimiseCashFlow } from "../utils/simplifyHeap.js";
 import History from "../models/history.js";
+import { io } from "../../server.js";
 
 export const addTransaction = async (req, res) => {
   try {
-    const { groupId,fromUserId, toUserId, amount } = req.body;
-    if (fromUserId === toUserId)
-  return res.status(400).json({ message: "Invalid transaction" });
+    const { groupId, fromUserId, toUserId, amount, description = "" } = req.body;
 
-    // check group exists
+
+    // if (fromUserId === toUserId) return
+
     const group = await Group.findById(groupId);
-    if (!group) {
+    if (!group)
       return res.status(404).json({ message: "Group not found" });
-    }
 
-    // only group members can add transaction
-    if (!group.members.includes(req.userId)) {
+    if (!group.members.includes(req.userId))
       return res.status(403).json({ message: "Not a group member" });
-    }
 
-    const transaction = await Transaction.create({
-      groupId,
-      fromUserId,
-      toUserId,
-      amount,
-    });
+   const transaction = await Transaction.create({
+  groupId,
+  fromUserId,
+  toUserId,
+  amount,
+  description,
+});
 
-    res.status(201).json({
-      message: "Transaction added",
-      transaction,
-    });
+// 🔥 populate before emitting
+const populatedTx = await Transaction.findById(transaction._id)
+  .populate("fromUserId", "username")
+  .populate("toUserId", "username");
+
+io.to(groupId).emit("newTransaction", populatedTx);
+
+
+   return res.status(201).json(populatedTx);
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const getGroupTransactions = async (req, res) => {
   try {

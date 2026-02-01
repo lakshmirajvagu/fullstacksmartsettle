@@ -7,28 +7,38 @@ export const inviteUser = async (req, res) => {
   try {
     const { groupId, toUserId } = req.body;
 
-    // check group exists
-    if (toUserId === req.userId)
-  return res.status(400).json({ message: "Cannot invite yourself" });
+    // 1) basic guards
+    if (!groupId || !toUserId) {
+      return res.status(400).json({ message: "groupId and toUserId required" });
+    }
 
+    if (String(toUserId) === String(req.userId)) {
+      return res.status(400).json({ message: "Cannot invite yourself" });
+    }
+
+    // 2) group must exist
     const group = await Group.findById(groupId);
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
 
-    // only group member can invite
-    if (!group.members.includes(req.userId)) {
+    // 3) inviter must be a member
+    if (!group.members.map(String).includes(String(req.userId))) {
       return res.status(403).json({ message: "Not a group member" });
     }
 
-    // check if user exists
+    // 4) user must exist
     const user = await User.findById(toUserId);
     if (!user) {
-    return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
+    // 5) already in group? don't invite
+    if (group.members.map(String).includes(String(toUserId))) {
+      return res.status(400).json({ message: "User already in group" });
+    }
 
-    // prevent duplicate invite
+    // 6) duplicate pending invite? don't create another
     const existingInvite = await Invitation.findOne({
       groupId,
       toUserId,
@@ -39,10 +49,12 @@ export const inviteUser = async (req, res) => {
       return res.status(400).json({ message: "Invitation already sent" });
     }
 
+    // 7) create invite
     const invite = await Invitation.create({
       groupId,
       fromUserId: req.userId,
       toUserId,
+      status: "pending",
     });
 
     res.status(201).json({
@@ -53,6 +65,7 @@ export const inviteUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const getMyInvitations = async (req, res) => {
   try {

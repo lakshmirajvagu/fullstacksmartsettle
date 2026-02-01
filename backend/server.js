@@ -8,6 +8,8 @@ import groupRoutes from "./src/routes/grouproutes.js";
 import invitationRoutes from "./src/routes/Invitationroutes.js";
 import transactionRoutes from "./src/routes/transactionroutes.js";
 import historyRoutes from "./src/routes/historyroutes.js";
+import http from "http";
+import { Server} from "socket.io";
 
 
 dotenv.config();
@@ -31,6 +33,24 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/history", historyRoutes);
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+export const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("joinGroup", (groupId) => {
+    socket.join(groupId);
+  });
+});
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
