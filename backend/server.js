@@ -18,7 +18,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 /* -------------------- MIDDLEWARE -------------------- */
-app.use(cors()); // Railway + Vercel friendly
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 /* -------------------- ROOT ROUTE -------------------- */
@@ -46,10 +51,11 @@ const server = http.createServer(app);
 
 export const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"]
   }
 });
+
 
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
