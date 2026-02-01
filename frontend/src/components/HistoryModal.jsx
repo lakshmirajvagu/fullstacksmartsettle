@@ -1,4 +1,4 @@
-import "../css/HistoryModel.css";
+import "../css/Historymodel.css";
 
 export default function HistoryModal({ record, close }) {
   if (!record) return null;
