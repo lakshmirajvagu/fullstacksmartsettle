@@ -1,5 +1,6 @@
 import { useState } from "react";
 import API from "../api/axios";
+import "../css/Modal.css";
 
 export default function CreateGroupModal({ close, refreshGroups }) {
   const [groupName, setGroupName] = useState("");
@@ -8,86 +9,65 @@ export default function CreateGroupModal({ close, refreshGroups }) {
   const [currentGroupId, setCurrentGroupId] = useState(null);
   const [invited, setInvited] = useState([]);
 
-  // 🔎 Search users
   const searchUsers = async (text) => {
     setSearch(text);
     if (text.length < 2) return;
-
     const res = await API.get(`/users/search?query=${text}`);
     setResults(res.data);
   };
 
-  // ➕ Create group first
   const createGroup = async () => {
     if (!groupName) {
       alert("Enter group name");
       return;
     }
-
     const res = await API.post("/groups", { name: groupName });
     setCurrentGroupId(res.data.group._id);
-
     alert("Group created! Now invite members.");
   };
 
-  // 📩 Send invitation
   const sendInvite = async (toUserId) => {
-    await API.post("/invitation", {
-      groupId: currentGroupId,
-      toUserId,
-    });
-    if (members.some(m => m._id === user._id)) return;
-
-    setInvited([...invited, toUserId]);
+    try {
+      await API.post("/invitation", { groupId: currentGroupId, toUserId });
+      setInvited([...invited, toUserId]);
+    } catch (err) {
+      alert(err.response?.data?.message);
+    }
   };
 
   return (
-    <div style={overlay}>
-      <div style={modal}>
-        <h3>Create Group</h3>
+    <div className="modal-overlay">
+      <div className="modal-box">
+        <div className="modal-title">Create Group</div>
 
-        {/* Group name */}
         <input
+          className="modal-input"
           placeholder="Group Name"
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
         />
-        <br /><br />
 
-        <button onClick={createGroup}>
+        <button className="primary-btn" onClick={createGroup}>
           {currentGroupId ? "Group Created" : "Create Group"}
         </button>
 
-        <hr />
-
-        {/* Search users only after group created */}
         {currentGroupId && (
           <>
             <input
+              className="modal-input"
               placeholder="Search Users"
               value={search}
               onChange={(e) => searchUsers(e.target.value)}
             />
-            <br /><br />
 
             {results.map((user) => (
-              <div
-                key={user._id}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  border: "1px solid #ccc",
-                  padding: "8px",
-                  marginBottom: "8px",
-                  borderRadius: "6px",
-                }}
-              >
+              <div key={user._id} className="user-result">
                 <div>
                   {user.username} ({user.email})
                 </div>
 
                 <button
+                  className="invite-btn"
                   onClick={() => sendInvite(user._id)}
                   disabled={invited.includes(user._id)}
                 >
@@ -98,8 +78,8 @@ export default function CreateGroupModal({ close, refreshGroups }) {
           </>
         )}
 
-        <br />
         <button
+          className="done-btn"
           onClick={() => {
             refreshGroups();
             close();
@@ -111,20 +91,3 @@ export default function CreateGroupModal({ close, refreshGroups }) {
     </div>
   );
 }
-
-const overlay = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  background: "rgba(0,0,0,0.5)",
-};
-
-const modal = {
-  background: "white",
-  width: "400px",
-  margin: "100px auto",
-  padding: "20px",
-  borderRadius: "8px",
-};

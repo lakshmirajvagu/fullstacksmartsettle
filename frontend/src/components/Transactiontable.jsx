@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
+import { socket } from "../api/socket";
+import "../css/Transactiontable.css";
 
-export default function TransactionTable({ groupId ,refresh}) {
+export default function TransactionTable({ groupId, refresh }) {
   const [transactions, setTransactions] = useState([]);
 
   const fetchTransactions = async () => {
@@ -10,25 +12,35 @@ export default function TransactionTable({ groupId ,refresh}) {
   };
 
   useEffect(() => {
+    socket.emit("joinGroup", groupId);
+
+    socket.on("newTransaction", (newTx) => {
+      setTransactions((prev) => [newTx, ...prev]);
+    });
+
+    return () => {
+      socket.off("newTransaction");
+    };
+  }, [groupId]);
+
+  useEffect(() => {
     fetchTransactions();
   }, [groupId, refresh]);
 
   return (
-    <div style={{ marginTop: "30px" }}>
-      <h3>Live Transactions</h3>
+    <div className="tx-table">
+      <div className="tx-table-title">Live Transactions</div>
 
       {transactions.map((t) => (
-        <div
-          key={t._id}
-          style={{
-            padding: "8px",
-            border: "1px solid #ccc",
-            marginBottom: "8px",
-            borderRadius: "6px",
-          }}
-        >
-          <b>{t.fromUserId.username}</b> owes{" "}
-          <b>{t.toUserId.username}</b> ₹{t.amount}
+        <div key={t._id} className="tx-item">
+          <div className="tx-main">
+            <b>{t.fromUserId.username}</b> owes{" "}
+            <b>{t.toUserId.username}</b> ₹{t.amount}
+          </div>
+
+          {t.description && (
+            <div className="tx-desc">{t.description}</div>
+          )}
         </div>
       ))}
     </div>

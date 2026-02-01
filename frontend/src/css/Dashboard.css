@@ -1,0 +1,59 @@
+/* Dashboard.css — Fintech Professional Layout */
+
+.dashboard-layout {
+  display: flex;
+  height: calc(100vh - 64px); /* minus navbar height */
+  background: #0f172a;
+  color: white;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* LEFT PANEL — GROUPS */
+.left-panel {
+  width: 28%;
+  background: #111827;
+  border-right: 1px solid #1f2937;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* RIGHT PANEL — DETAILS */
+.right-panel {
+  width: 72%;
+  padding: 28px 36px;
+  overflow-y: auto;
+}
+
+/* Group header */
+.group-header h2 {
+  color: #34d399;
+  margin-bottom: 8px;
+}
+
+.group-header h4 {
+  color: #9ca3af;
+  margin-bottom: 12px;
+}
+
+.members {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.member-chip {
+  padding: 6px 12px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #d1d5db;
+}
+
+/* Placeholder text */
+.placeholder {
+  color: #6b7280;
+  font-size: 18px;
+  margin-top: 40px;
+}

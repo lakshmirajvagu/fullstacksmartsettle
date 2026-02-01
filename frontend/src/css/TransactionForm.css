@@ -1,0 +1,93 @@
+/* TransactionForm.css — Fintech Card */
+
+.tx-card {
+  margin-top: 24px;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 22px 24px;
+  color: white;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.tx-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #34d399;
+  margin-bottom: 18px;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.mode-btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid #34d399;
+  background: transparent;
+  color: #34d399;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.mode-btn.active,
+.mode-btn:hover {
+  background: #34d399;
+  color: #0f172a;
+}
+
+.tx-input,
+.tx-select {
+  width: 100%;
+  padding: 9px 10px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: white;
+  font-size: 14px;
+}
+
+.tx-input:focus,
+.tx-select:focus {
+  border-color: #34d399;
+  outline: none;
+}
+
+.member-list {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+.add-btn {
+  margin-top: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #34d399;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #34d399;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+

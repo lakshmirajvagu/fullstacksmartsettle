@@ -1,0 +1,70 @@
+/* Invitations.css — Fintech Theme */
+
+.invite-page {
+  min-height: 100vh;
+  background: #0f172a;
+  padding: 28px 32px;
+  color: white;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.invite-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #34d399;
+  margin-bottom: 20px;
+}
+
+.invite-empty {
+  color: #9ca3af;
+  margin-top: 20px;
+}
+
+.invite-card {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  transition: 0.25s;
+}
+
+.invite-card:hover {
+  border-color: #34d399;
+}
+
+.invite-group {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.invite-from {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 6px 0 12px;
+}
+
+.invite-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.accept-btn,
+.reject-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.accept-btn {
+  background: #34d399;
+  color: #0f172a;
+}
+
+.reject-btn {
+  background: #374151;
+  color: #d1d5db;
+}

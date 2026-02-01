@@ -6,6 +6,7 @@ import TransactionForm from "../components/transactionform";
 import TransactionTable from "../components/Transactiontable";
 import SimplifiedTable from "../components/simplifiedtable";
 import API from "../api/axios";
+import "../css/Dashboard.css";
 
 export default function Dashboard() {
   const [showModal, setShowModal] = useState(false);
@@ -26,79 +27,54 @@ export default function Dashboard() {
     <div>
       <Navbar />
 
-      <div style={{ display: "flex", height: "90vh" }}>
+      <div className="dashboard-layout">
         
-        {/* LEFT PANEL — GROUPS */}
-        <div
-          style={{
-            width: "30%",
-            borderRight: "1px solid #ccc",
-            padding: "15px",
-            overflowY: "auto",
-            background: "#f9f9f9",
-          }}
-        >
+        {/* LEFT PANEL */}
+        <div className="left-panel">
           <GroupList
             groups={groups}
+            setGroups={setGroups}
             onCreate={() => setShowModal(true)}
             onSelect={(g) => setSelectedGroup(g)}
           />
         </div>
 
-        {/* RIGHT PANEL — DETAILS */}
-        <div
-          style={{
-            width: "70%",
-            padding: "25px",
-            overflowY: "auto",
-          }}
-        >
+        {/* RIGHT PANEL */}
+        <div className="right-panel">
           {selectedGroup ? (
             <>
-              {/* Group Header */}
-              <div style={{ marginBottom: "20px" }}>
+              <div className="group-header">
                 <h2>{selectedGroup.name}</h2>
                 <h4>Members</h4>
 
-                <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
+                <div className="members">
                   {selectedGroup.members.map((m) => (
-                    <div
-                      key={m._id}
-                      style={{
-                        padding: "8px 12px",
-                        background: "#e3e3e3",
-                        borderRadius: "8px",
-                      }}
-                    >
+                    <div key={m._id} className="member-chip">
                       {m.username}
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Transaction Form */}
-             <TransactionForm
-  members={selectedGroup.members}
-  groupId={selectedGroup._id}
-   triggerRefresh={() => setRefreshTable(!refreshTable)}
-/>
-<TransactionTable groupId={selectedGroup._id} 
-refresh={refreshTable}
-/>
+              <TransactionForm
+                members={selectedGroup.members}
+                groupId={selectedGroup._id}
+              />
 
-<SimplifiedTable
-  groupId={selectedGroup._id}
-  members={selectedGroup.members}
-  triggerRefresh={() => setRefreshTable(!refreshTable)}
-/>
+              <TransactionTable
+                groupId={selectedGroup._id}
+                refresh={refreshTable}
+              />
 
-
-
+              <SimplifiedTable
+                groupId={selectedGroup._id}
+                members={selectedGroup.members}
+              />
             </>
           ) : (
-            <h3 style={{ color: "gray" }}>
-              Select a group to see transactions
-            </h3>
+            <div className="placeholder">
+              Select a group to view and manage transactions
+            </div>
           )}
         </div>
       </div>

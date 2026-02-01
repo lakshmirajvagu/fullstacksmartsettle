@@ -1,52 +1,63 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import "../css/Invitations.css";
 
 export default function Invitations() {
   const [invites, setInvites] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchInvites();
   }, []);
 
   const fetchInvites = async () => {
-    const res = await API.get("http://localhost:5000/api/invitation");
+    const res = await API.get("/invitation");
     setInvites(res.data);
   };
 
   const acceptInvite = async (id) => {
-    await API.post("http://localhost:5000/api/invitation/accept", { inviteId: id });
+    await API.post("/invitation/accept", { inviteId: id });
     fetchInvites();
+    navigate("/dashboard");
   };
 
   const rejectInvite = async (id) => {
-    await API.post("http://localhost:5000/api/invitation/reject", { inviteId: id });
+    await API.post("/invitation/reject", { inviteId: id });
     fetchInvites();
+    navigate("/dashboard");
   };
 
   return (
-    <div style={{ padding: "25px" }}>
-      <h2>Your Invitations</h2>
+    <div className="invite-page">
+      <div className="invite-title">Your Invitations</div>
 
-      {invites.length === 0 && <p>No invitations</p>}
+      {invites.length === 0 && (
+        <div className="invite-empty">No invitations</div>
+      )}
 
       {invites.map((inv) => (
-        <div
-          key={inv._id}
-          style={{
-            border: "1px solid #ccc",
-            padding: "15px",
-            borderRadius: "8px",
-            marginBottom: "10px",
-            background: "#f9f9f9",
-          }}
-        >
-          <h4>{inv.groupId.name}</h4>
-          <p>Invited by: {inv.fromUserId.username}</p>
+        <div key={inv._id} className="invite-card">
+          <div className="invite-group">{inv.groupId.name}</div>
+          <div className="invite-from">
+            Invited by: {inv.fromUserId.username}
+          </div>
 
-          <button onClick={() => acceptInvite(inv._id)}>Accept</button>
-          navigate("/dashboard");
-          <button onClick={() => rejectInvite(inv._id)}>Reject</button>
-          navigate("/dashboard");
+          <div className="invite-actions">
+            <button
+              className="accept-btn"
+              onClick={() => acceptInvite(inv._id)}
+            >
+              Accept
+            </button>
+
+            <button
+              className="reject-btn"
+              onClick={() => rejectInvite(inv._id)}
+            >
+              Reject
+            </button>
+          </div>
         </div>
       ))}
     </div>

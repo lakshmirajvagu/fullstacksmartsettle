@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 import HistoryModal from "../components/HistoryModal";
+import "../css/History.css";
 
 export default function History() {
   const [records, setRecords] = useState([]);
@@ -16,23 +17,18 @@ export default function History() {
   };
 
   return (
-    <div style={{ padding: "25px" }}>
-      <h2>Your Settlement History</h2>
+    <div className="history-page">
+      <div className="history-heading">Your Settlement History</div>
 
       {records.map((h) => (
         <div
           key={h._id}
+          className="history-card"
           onClick={() => setSelected(h)}
-          style={{
-            padding: "12px",
-            border: "1px solid #ccc",
-            borderRadius: "6px",
-            marginBottom: "10px",
-            cursor: "pointer",
-            background: "#f9f9f9",
-          }}
         >
-          {h.groupId.name}
+          <div className="history-group-name">
+            {h.groupId.name}
+          </div>
         </div>
       ))}
 

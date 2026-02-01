@@ -1,0 +1,146 @@
+/* GroupList.css — Fintech Sidebar */
+
+.group-list {
+  color: white;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.group-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #34d399;
+}
+
+.group-card {
+  background: #1f2937;
+  border: 1px solid #374151;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.group-card:hover {
+  border-color: #34d399;
+  transform: translateY(-2px);
+}
+
+.group-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.menu-dots {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #9ca3af;
+}
+
+.group-menu {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 6px 8px;
+  z-index: 10;
+  font-size: 13px;
+}
+
+.group-menu div {
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.group-menu div:hover {
+  color: #34d399;
+}
+
+.create-btn {
+  width: 100%;
+  padding: 9px;
+  border-radius: 6px;
+  border: 1px solid #34d399;
+  background: transparent;
+  color: #34d399;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.create-btn:hover {
+  background: #34d399;
+  color: #0f172a;
+}
+
+/* Add Member Popup */
+.member-popup {
+  position: fixed;
+  top: 30%;
+  left: 38%;
+  width: 350px;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 18px;
+  z-index: 100;
+  color: white;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: white;
+}
+
+.user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1f2937;
+  border: 1px solid #374151;
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.invite-btn {
+  background: #34d399;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.invite-btn:disabled {
+  background: #374151;
+  color: #9ca3af;
+}
+
+.close-btn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 7px;
+  border-radius: 6px;
+  border: 1px solid #34d399;
+  background: transparent;
+  color: #34d399;
+  font-weight: 700;
+  cursor: pointer;
+}

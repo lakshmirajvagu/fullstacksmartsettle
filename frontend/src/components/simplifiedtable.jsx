@@ -1,23 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import API from "../api/axios";
-import { useEffect } from "react";
+import "../css/SimplifiedTable.css";
 
-export default function SimplifiedTable({ groupId,members, triggerRefresh }) {
+export default function SimplifiedTable({ groupId, members, triggerRefresh }) {
   const [simplified, setSimplified] = useState([]);
 
   const handleSimplify = async () => {
     const res = await API.post("/transactions/simplify", { groupId });
     setSimplified(res.data.simplified || []);
   };
+
   useEffect(() => {
-  setSimplified([]);   // clear when group changes
-}, [groupId]);
+    setSimplified([]);
+  }, [groupId]);
 
-const getName = (id) => {
-  const user = members.find((m) => String(m._id) === String(id));
-  return user ? user.username : "Unknown";
-};
-
+  const getName = (id) => {
+    const user = members.find((m) => String(m._id) === String(id));
+    return user ? user.username : "Unknown";
+  };
 
   const handleSave = async () => {
     await API.post("/transactions/save", { groupId });
@@ -27,27 +27,25 @@ const getName = (id) => {
   };
 
   return (
-    <div style={{ marginTop: "30px" }}>
-      <button onClick={handleSimplify}>Simplify</button>
+    <div className="simplify-card">
+      <button className="simplify-btn" onClick={handleSimplify}>
+        Simplify Debts
+      </button>
 
       {simplified.length > 0 && (
         <>
-          <h3>Simplified Result</h3>
+          <div className="result-title">Simplified Settlement</div>
 
           {simplified.map((t, i) => (
-            <div key={i} style={{
-              padding: "8px",
-              border: "1px solid #ccc",
-              marginBottom: "8px",
-              borderRadius: "6px",
-            }}>
-             <b>{getName(t.fromUserId)}</b> pays{" "}
-<b>{getName(t.toUserId)}</b> ₹{t.amount}
-
+            <div key={i} className="result-item">
+              <b>{getName(t.fromUserId)}</b> pays{" "}
+              <b>{getName(t.toUserId)}</b> ₹{t.amount}
             </div>
           ))}
 
-          <button onClick={handleSave}>Save Settlement</button>
+          <button className="save-btn" onClick={handleSave}>
+            Save Settlement
+          </button>
         </>
       )}
     </div>
