@@ -20,11 +20,23 @@ const PORT = process.env.PORT || 5000;
 /* -------------------- MIDDLEWARE -------------------- */
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://fullstacksmartsettle.vercel.app"
+  /\.vercel\.app$/
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (
+      allowedOrigins.some(o =>
+        typeof o === "string" ? o === origin : o.test(origin)
+      )
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 
@@ -55,10 +67,23 @@ const server = http.createServer(app);
 
 export const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
-    methods: ["GET", "POST"]
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (
+        origin.includes("localhost") ||
+        origin.endsWith(".vercel.app")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
+
 
 
 io.on("connection", (socket) => {
