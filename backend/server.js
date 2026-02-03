@@ -18,9 +18,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 /* -------------------- MIDDLEWARE -------------------- */
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://fullstacksmartsettle.vercel.app"
+];
+
 app.use(cors({
-  origin: "https://fullstacksmartsettle-d2ji.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: allowedOrigins,
   credentials: true
 }));
 
@@ -51,7 +55,7 @@ const server = http.createServer(app);
 
 export const io = new Server(server, {
   cors: {
-    origin: "https://fullstacksmartsettle-d2ji.vercel.app",
+    origin: allowedOrigins,
     methods: ["GET", "POST"]
   }
 });
